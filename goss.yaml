@@ -1,0 +1,48 @@
+user:
+  tang:
+    exists: true
+    uid: 1000
+
+package:
+  jose:
+    installed: true
+  llhttp:
+    installed: true
+  tini:
+    installed: true
+
+file:
+  /usr/libexec/tangd:
+    exists: true
+    mode: "0755"
+  /usr/libexec/tangd-keygen:
+    exists: true
+  /var/db/tang:
+    exists: true
+    owner: tang
+    filetype: directory
+
+process:
+  tangd:
+    running: true
+
+port:
+  tcp:8080:
+    listening: true
+
+command:
+  tangd --version:
+    exec: /usr/libexec/tangd --version
+    exit-status: 0
+    stderr:
+    - "tangd 16"
+  generated keys:
+    exec: sh -c 'ls /var/db/tang/*.jwk | wc -l'
+    exit-status: 0
+    stdout:
+    - "2"
+  advertisement is a signed JWS with both keys:
+    exec: sh -c 'wget -qO- http://127.0.0.1:8080/adv | jose fmt -j- -Og payload -SyOg keys -A -l -o-'
+    exit-status: 0
+    stdout:
+    - "2"
