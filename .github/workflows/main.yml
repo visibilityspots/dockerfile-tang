@@ -9,6 +9,9 @@ on:
     branches: [main]
 jobs:
   main:
+    # the repo token defaults to read; the release and CHANGELOG commit need write
+    permissions:
+      contents: write
     uses: visibilityspots/github-workflows/.github/workflows/main.yml@main
     with:
       platforms: 'linux/amd64,linux/arm64'

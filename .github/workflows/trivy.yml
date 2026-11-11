@@ -10,4 +10,8 @@ on:
 
 jobs:
   scan:
+    # the repo token defaults to read; SARIF upload needs security-events
+    permissions:
+      contents: read
+      security-events: write
     uses: visibilityspots/github-workflows/.github/workflows/trivy.yml@main
