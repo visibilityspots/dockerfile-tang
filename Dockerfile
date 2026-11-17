@@ -23,6 +23,7 @@ ENV JWKDIR=/var/db/tang
 
 RUN addgroup -S -g 1000 tang && \
     adduser -S -D -H -u 1000 -G tang tang && \
+    apk upgrade --no-cache && \
     apk add --no-cache jose llhttp tini && \
     mkdir -p /var/db/tang && \
     chown tang:tang /var/db/tang
